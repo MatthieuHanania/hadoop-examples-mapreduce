@@ -1,6 +1,7 @@
 # YARN & MapReduce 2
 Hugo Freitas & Matthieu Hanania
 <ins> Link : https://github.com/MatthieuHanania/hadoop-examples-mapreduce
+Please check the commit
 
 # 1 MapReduce JAVA
 
@@ -491,6 +492,77 @@ And return them
 
 IT just return what it received
 
+
+## 1.8.6 District containing the oldest tree
+
+Firstly we create the function in Appdriver
+
+```
+programDriver.addClass("OldTree", OldTree.class,
+"A map/reduce program that display the district contraining the oldest tree");
+```
+
+\
+<ins> ``OldTree.java``
+
+In this file we set the mapper and reducer 
+And we want to display a couple (district age) as a key
+```
+job.setOutputKeyClass(DistrictAgeWritable.class);
+job.setOutputValueClass(IntWritable.class);
+```
+
+Then we create a file ``DistrictAgeWritable`` It is a file that implement writable
+
+
+The file contain the year and a district. We use getter and setter
+```
+private int age;
+private int district;
+
+public void setAge(int age){ this.age = age; }
+...
+public int getDistrict(){ return this.district; }
+
+```
+
+We also write function of the Writable class
+```bash
+
+public void write(DataOutput dataOutput) throws IOException {
+    dataOutput.writeInt(this.age);
+    dataOutput.writeInt(this.district);
+}
+
+public void readFields(DataInput in) throws IOException {
+    this.age = in.readInt();
+    this.district = in.readInt();
+}
+```
+
+\
+<ins> ``OldTreeMapper``
+
+
+In this file , we have to put district and year into the new Writable
+
+So we make the function extends of the good types
+```
+extends Mapper<Object, Text, DistrictAgeWritable, IntWritable> 
+```
+
+
+
+\
+<ins> ``OldTreeMapper``
+
+The reducer just display the age and district 
+
+So the class extends of the good types 
+
+```
+OldTreeReducer extends Reducer<DistrictAgeWritable, IntWritable, DistrictAgeWritable, IntWritable> {
+```
 
 
 

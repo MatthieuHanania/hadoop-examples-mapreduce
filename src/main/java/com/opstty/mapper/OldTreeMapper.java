@@ -15,21 +15,17 @@ public class OldTreeMapper extends Mapper<Object, Text, DistrictAgeWritable, Int
     private DistrictAgeWritable districtAgeWritable = new DistrictAgeWritable();
     private IntWritable zero = new IntWritable(0);
 
-    IntWritable Wage = new IntWritable();
-    IntWritable Wdistrict = new IntWritable();
-
     public void map(Object key, Text value, Mapper.Context context)
             throws IOException, InterruptedException {
 
         String[] trees = (value.toString()).split(";");
         if(!trees[0].equals("GEOPOINT")){ //ignore first line
             try{
-                double district = (double) Integer.parseInt(trees[1]); //get the district
-                double yearPlant =  (double) Integer.parseInt(trees[5]); //get the year plant
+                int district = Integer.parseInt(trees[1]); //get the district
+                int yearPlant =Integer.parseInt(trees[5]); //get the year plant
 
-                String truc = String.valueOf(district);
-                truc+= String.valueOf(yearPlant);
-
+                districtAgeWritable.setDistrict(district);
+                districtAgeWritable.setAge(yearPlant);
 
                 context.write(districtAgeWritable, zero);
             }catch (NumberFormatException e){}
