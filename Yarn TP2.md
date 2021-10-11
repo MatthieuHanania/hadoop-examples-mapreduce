@@ -395,5 +395,5 @@ Process finished with exit code 0
 
 ## 1.8.5 Sort the trees height from smallest to largest (average)
 
-We 
+
 
