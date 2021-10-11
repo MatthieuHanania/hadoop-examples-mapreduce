@@ -27,6 +27,9 @@ public class AppDriver {
             programDriver.addClass("SortHeight", SortHeight.class,
                     "A map/reduce program that sort the trees height");
 
+            programDriver.addClass("OldTree", OldTree.class,
+                    "A map/reduce program that display the district contraining the oldest tree");
+
 
             exitCode = programDriver.run(argv);
 
