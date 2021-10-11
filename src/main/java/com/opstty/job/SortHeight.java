@@ -1,10 +1,10 @@
 package com.opstty.job;
 
-import com.opstty.mapper.list_districtMapper;
-import com.opstty.reducer.IntSumReducer;
-import com.opstty.reducer.list_districtReducer;
+import com.opstty.mapper.SortHeightMapper;
+import com.opstty.reducer.SortHeightReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -12,22 +12,21 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+public class SortHeight {
 
-public class list_district {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
         if (otherArgs.length < 2) {
-            System.err.println("Usage: list_district <in> [<in>...] <out>");
+            System.err.println("Usage: SortHeight <in> [<in>...] <out>");
             System.exit(2);
         }
-
-        Job job = Job.getInstance(conf, "list_district");
-        job.setJarByClass(list_district.class);
-        job.setMapperClass(list_districtMapper.class);
-        job.setCombinerClass(list_districtReducer.class);
-        job.setReducerClass(list_districtReducer.class);
-        job.setOutputKeyClass(Text.class);
+        Job job = Job.getInstance(conf, "SortHeight");
+        job.setJarByClass(WordCount.class);
+        job.setMapperClass(SortHeightMapper.class);
+        job.setCombinerClass(SortHeightReducer.class);
+        job.setReducerClass(SortHeightReducer.class);
+        job.setOutputKeyClass(DoubleWritable.class);
         job.setOutputValueClass(IntWritable.class);
         for (int i = 0; i < otherArgs.length - 1; ++i) {
             FileInputFormat.addInputPath(job, new Path(otherArgs[i]));

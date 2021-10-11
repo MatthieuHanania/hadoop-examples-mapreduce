@@ -1,5 +1,6 @@
 # YARN & MapReduce 2
 Hugo Freitas & Matthieu Hanania
+<ins> Link : https://github.com/MatthieuHanania/hadoop-examples-mapreduce
 
 # 1 MapReduce JAVA
 
@@ -158,7 +159,8 @@ if(!trees[0].equals("GEOPOINT")){ //ignore first line
 The reducer ``speciesReducer`` is the same as before
 
 To start the job we use  
-``yarn jar hadoop-examples-mapreduce-1.0-SNAPSHOT-jar-with-dependencies.jar species /user/m.hanania/trees.csv /user/m.hanania/species``
+``yarn jar hadoop-examples-mapreduce-1.0-SNAPSHOT-jar-with-dependencies.jar species /user/m.hanania/trees.csv /user/m.hanania/species
+``
 
 and get
 ```bash
@@ -394,6 +396,103 @@ Process finished with exit code 0
 ```
 
 ## 1.8.5 Sort the trees height from smallest to largest (average)
+### <ins> Code
+
+Firslty we create the function 
+
+```bash
+programDriver.addClass("SortHeight", SortHeight.class,
+  "A map/reduce program that sort the trees height");
+```
+
+For this job, we want to send at the end, the height sorted. And the reducer sort naturally the keys. So we want height as keys.
+
+That is why, we set the type to the end key to DoubleWritable
+
+So we write on the file ``SortHeight.java`` 
+```
+job.setReducerClass(SortHeightReducer.class);
+job.setOutputKeyClass(DoubleWritable.class);
+job.setOutputValueClass(IntWritable.class);
+```
+
+
+<ins>`SortHeightMapper`
+
+The Mapper send a combination of key and height. We choose the `Object_ID` as key because it can identify each trees separately 
+
+```bash
+ try{
+    int objectId = Integer.parseInt(trees[11]); //get The object ID
+    word.set(Double.parseDouble(trees[6])); //get the height
+
+    val.set(objectId);
+
+    context.write(word, val);
+}catch (NumberFormatException e){}
+
+```
+
+<ins>`SortHeightReducer`
+
+The reducer just return the height and the Id of all trees
+
+```bash
+int value = 0;
+for (IntWritable val : values) {
+    value += val.get();
+}
+
+result.set(value);
+context.write(key, result);
+```
+
+We get
+```
+[m.hanania@hadoop-edge01 ~]$ hdfs dfs -cat SortHeight/part-r-00000
+2.0     3
+5.0     89
+6.0     62
+9.0     39
+10.0    295
+11.0    4
+12.0    426
+13.0    42
+14.0    258
+15.0    266
+16.0    197
+18.0    230
+20.0    330
+```
+
+
+###<ins> Test
+
+\
+<ins> `SortHeightMapperTest`
+
+The MapperTest received a line and return only the height and the ID
+The height is a ``DoubleWritable`` and the ID is an `IntWritable`
+
+```bash
+String value = "(48.857140829, 2.29533455314);7;Maclura;pomifera;Moraceae;1935;13.0;;Quai Branly, avenue de La Motte-Piquet, avenue de la Bourdonnais, avenue de Suffren;Oranger des Osages;;6;Parc du Champs de Mars";
+this.SortHeightMapper.map(null, new Text(value), this.context);
+verify(this.context, times(1))
+        .write(new DoubleWritable(13.0), new IntWritable(6));
+```
+``13.0`` and ``6`` in this case
+
+\
+<ins> `SortHeightReducerTest`
+
+The reducer get a ``DoubleWritable`` (the height) and an ``IntWritable`` (the ID)
+
+And return them
+
+IT just return what it received
+
+
+
 
 
 

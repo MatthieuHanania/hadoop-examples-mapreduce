@@ -15,6 +15,4 @@ public class list_districtReducer extends Reducer<Text, IntWritable, Text, IntWr
         result.set(1);
         context.write(key, result);
     }
-
-
 }
