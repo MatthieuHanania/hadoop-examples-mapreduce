@@ -551,6 +551,20 @@ So we make the function extends of the good types
 extends Mapper<Object, Text, DistrictAgeWritable, IntWritable> 
 ```
 
+We suppose that we have to send year and district to the new class
+
+```
+try{
+    int age =Integer.parseInt(trees[5]); //get the year plant
+    int district = Integer.parseInt(trees[1]); //get the district
+
+    districtAgeWritable.setAge(age);
+    districtAgeWritable.setDistrict(district);
+
+    context.write(districtAgeWritable, one);
+}catch (NumberFormatException e){}
+```
+
 Unfortunately the mapper doesn't work. So We can't continue the exercice
 
 ```bash
