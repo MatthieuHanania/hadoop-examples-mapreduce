@@ -1,8 +1,6 @@
 package com.opstty.job;
 
 import com.opstty.mapper.NumTreesMapper;
-import com.opstty.mapper.TokenizerMapper;
-import com.opstty.reducer.IntSumReducer;
 import com.opstty.reducer.NumTreesReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;

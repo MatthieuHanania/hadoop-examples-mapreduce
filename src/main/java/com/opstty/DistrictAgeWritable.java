@@ -10,7 +10,13 @@ public class DistrictAgeWritable implements Writable {
     private int age;
     private int district;
 
-    public DistrictAgeWritable(){}
+    public DistrictAgeWritable(){ }
+
+
+    public DistrictAgeWritable(int age, int district){
+        this.age = age;
+        this.district = district;
+    }
 
     public void setAge(int age){
         this.age = age;
@@ -22,8 +28,8 @@ public class DistrictAgeWritable implements Writable {
 
     @Override
     public void readFields(DataInput in) throws IOException {
-        this.district = in.readInt();
         this.age = in.readInt();
+        this.district = in.readInt();
     }
 
 
@@ -32,13 +38,9 @@ public class DistrictAgeWritable implements Writable {
     public int getDistrict(){ return this.district; }
 
     @Override
-    public void write(DataOutput dataOutput) throws IOException {
-        dataOutput.writeInt(this.age);
-        dataOutput.writeInt(this.district);
+    public void write(DataOutput out) throws IOException {
+        out.writeInt(this.age);
+        out.writeInt(this.district);
     }
-
-
-
-
 }
 

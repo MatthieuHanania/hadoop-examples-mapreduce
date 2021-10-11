@@ -1,7 +1,6 @@
 package com.opstty.mapper;
 
 import com.opstty.DistrictAgeWritable;
-import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -11,9 +10,8 @@ import java.io.IOException;
 
 public class OldTreeMapper extends Mapper<Object, Text, DistrictAgeWritable, IntWritable> {
 
-
-    private DistrictAgeWritable districtAgeWritable = new DistrictAgeWritable();
-    private IntWritable zero = new IntWritable(0);
+    private IntWritable one = new IntWritable(1);
+    private DistrictAgeWritable districtAgeWritable= new DistrictAgeWritable();
 
     public void map(Object key, Text value, Mapper.Context context)
             throws IOException, InterruptedException {
@@ -21,16 +19,15 @@ public class OldTreeMapper extends Mapper<Object, Text, DistrictAgeWritable, Int
         String[] trees = (value.toString()).split(";");
         if(!trees[0].equals("GEOPOINT")){ //ignore first line
             try{
+                int age =Integer.parseInt(trees[5]); //get the year plant
                 int district = Integer.parseInt(trees[1]); //get the district
-                int yearPlant =Integer.parseInt(trees[5]); //get the year plant
 
+                districtAgeWritable.setAge(age);
                 districtAgeWritable.setDistrict(district);
-                districtAgeWritable.setAge(yearPlant);
 
-                context.write(districtAgeWritable, zero);
+                context.write(districtAgeWritable, one);
             }catch (NumberFormatException e){}
 
         }
     }
-
 }

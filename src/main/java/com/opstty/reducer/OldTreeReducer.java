@@ -14,7 +14,6 @@ public class OldTreeReducer extends Reducer<DistrictAgeWritable, IntWritable, Di
     public void reduce(DistrictAgeWritable key, Iterable<IntWritable> values, Context context)
             throws IOException, InterruptedException {
 
-
         result.set(1);
         context.write(key, result);
     }

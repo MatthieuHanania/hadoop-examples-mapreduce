@@ -2,13 +2,10 @@ package com.opstty.job;
 
 import com.opstty.DistrictAgeWritable;
 import com.opstty.mapper.OldTreeMapper;
-import com.opstty.mapper.TallKindMapper;
 import com.opstty.reducer.OldTreeReducer;
-import com.opstty.reducer.TallKindReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;

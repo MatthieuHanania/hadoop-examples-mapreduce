@@ -551,10 +551,18 @@ So we make the function extends of the good types
 extends Mapper<Object, Text, DistrictAgeWritable, IntWritable> 
 ```
 
+Unfortunately the mapper doesn't work. So We can't continue the exercice
+
+```bash
+Error: java.io.IOException: Initialization of all the collectors failed. Error in last collector was:java.lang.ClassCastException: class com.opstty.DistrictAgeWritable
+        at org.apache.hadoop.mapred.MapTask.createSortingCollector(MapTask.java:423)
+...
+Caused by: java.lang.ClassCastException: class com.opstty.DistrictAgeWritable
+```
 
 
 \
-<ins> ``OldTreeMapper``
+<ins> ``OldTreeReducer``
 
 The reducer just display the age and district 
 
@@ -562,6 +570,13 @@ So the class extends of the good types
 
 ```
 OldTreeReducer extends Reducer<DistrictAgeWritable, IntWritable, DistrictAgeWritable, IntWritable> {
+```
+
+It is not very usefull here so we just make it send 
+
+```
+result.set(1);
+context.write(key, result);
 ```
 
 

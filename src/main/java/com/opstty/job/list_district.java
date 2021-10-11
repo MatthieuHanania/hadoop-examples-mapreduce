@@ -1,7 +1,6 @@
 package com.opstty.job;
 
 import com.opstty.mapper.list_districtMapper;
-import com.opstty.reducer.IntSumReducer;
 import com.opstty.reducer.list_districtReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
